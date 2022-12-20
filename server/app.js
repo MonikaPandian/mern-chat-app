@@ -7,13 +7,18 @@ const messageRoutes = require("./routes/messageRoutes.js");
 const {notFound, errorHandler} = require('./middleware/errorMiddleware')
 const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
 
 dotenv.config();
-connectDB();
 const app = express();
 
 app.use(express.json()); //to accept json data
 app.use(cors());
+
+mongoose.set('strictQuery', false);
+mongoose.connect(process.env.MONGO_URI,{useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=>app.listen(process.env.PORT, ()=> console.log(`Listening at ${process.env.PORT}`)))
+.catch((error) => console.log(error));
 
 app.use(`/api/user`, userRoutes);
 app.use('/api/chat', chatRoutes);
