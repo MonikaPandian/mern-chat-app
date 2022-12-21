@@ -10,15 +10,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 dotenv.config();
+connectDB();
 const app = express();
 
 app.use(express.json()); //to accept json data
 app.use(cors());
-
-mongoose.set('strictQuery', false);
-mongoose.connect(process.env.MONGO_URI,{useNewUrlParser: true, useUnifiedTopology: true})
-.then((response) => console.log(`MongoDB Connected: ${response.connection.host}`))
-.catch((error) => console.log(error));
 
 app.use(`/api/user`, userRoutes);
 app.use('/api/chat', chatRoutes);
