@@ -17,7 +17,7 @@ app.use(cors());
 
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_URI,{useNewUrlParser: true, useUnifiedTopology: true})
-.then(()=>app.listen(process.env.PORT, ()=> console.log(`Listening at ${process.env.PORT}`)))
+.then((response) => console.log(`MongoDB Connected: ${response.connection.host}`))
 .catch((error) => console.log(error));
 
 app.use(`/api/user`, userRoutes);
@@ -46,7 +46,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000 
 
-const server = app.listen(5000, console.log(`Server started on PORT ${PORT}`));
+const server = app.listen(PORT, console.log(`Server started on PORT ${PORT}`));
 
 const io = require("socket.io")(server, {
     pingTimeout: 60000,
