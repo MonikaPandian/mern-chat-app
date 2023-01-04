@@ -4,7 +4,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes.js");
 const chatRoutes = require("./routes/chatRoutes.js");
 const messageRoutes = require("./routes/messageRoutes.js");
-const {notFound, errorHandler} = require('./middleware/errorMiddleware')
+const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -22,25 +22,25 @@ app.use('/api/message', messageRoutes);
 
 // -------------Deployment--------------- //
 const _dirname = path.dirname("")
-const buildPath = path.join(_dirname , "../client/build");
+const buildPath = path.join(_dirname, "../client/build");
 
 app.use(express.static(buildPath))
-app.get("/*", function(req, res) {
+app.get("/*", function (req, res) {
 
     res.sendFile(path.join(__dirname, "../client/build/index.html"),
-    function (err) {
-        if (err) {
-            res.status(500).send(err);
+        function (err) {
+            if (err) {
+                res.status(500).send(err);
+            }
         }
-    }
     );
 })
 // -------------Deployment--------------- //
 
-app.use(notFound); 
+app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000 
+const PORT = process.env.PORT || 5000
 
 const server = app.listen(PORT, console.log(`Server started on PORT ${PORT}`));
 
@@ -68,14 +68,14 @@ io.on("connection", (socket) => {
         socket.join(room);
         console.log("User Joined Room:" + room);
     });
-       
+
     socket.on('new message', (newMessageReceived) => {
         var chat = newMessageReceived.chat;
 
-        if(!chat.users) return console.log("chat.users not defined");
+        if (!chat.users) return console.log("chat.users not defined");
 
         chat.users.forEach(user => {
-            if(user._id == newMessageReceived.sender._id) return;
+            if (user._id == newMessageReceived.sender._id) return;
 
             socket.in(user._id).emit("message received", newMessageReceived);
         })
@@ -83,6 +83,6 @@ io.on("connection", (socket) => {
 
     socket.off("setup", () => {
         console.log("user disconnected");
-        socket.leave(userData._id);                
+        socket.leave(userData._id);
     });
 });

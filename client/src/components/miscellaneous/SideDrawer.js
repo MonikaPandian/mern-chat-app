@@ -7,7 +7,7 @@ import { ChatState } from '../../Context/ChatProvider'
 import ProfileModal from './ProfileModal'
 import {
   Drawer,
-  DrawerBody, 
+  DrawerBody,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -28,13 +28,13 @@ const SideDrawer = () => {
   const navigate = useNavigate();
   const { user, setSelectedChat, chats, setChats, notification, setNotification } = ChatState();
   const toast = useToast();
-  
+
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     navigate("/");
   };
 
-  const handleSearch = async() => {
+  const handleSearch = async () => {
     if (!search) {
       toast({
         title: "Please enter something in search",
@@ -48,18 +48,16 @@ const SideDrawer = () => {
 
     try {
       setLoading(true)
-
       const config = {
-        headers : {
+        headers: {
           Authorization: `Bearer ${user.token}`,
         },
-        };
-        const { data } = await axios.get(`/api/user?search=${search}`, config);
-
-        setLoading(false);
-        setSearchResult(data);        
-      }
-     catch (error) {
+      };
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      setLoading(false);
+      setSearchResult(data);
+    }
+    catch (error) {
       toast({
         title: "Error Occured",
         description: "Failed to Load the search results",
@@ -71,27 +69,27 @@ const SideDrawer = () => {
     }
   };
 
-  const accessChat = async(userId) => {
-    try{
+  const accessChat = async (userId) => {
+    try {
       setLoadingChat(true);
 
       const config = {
-        headers : {
+        headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
-        };
+      };
 
-        const { data } = await axios.post('/api/chat', { userId }, config);
+      const { data } = await axios.post('/api/chat', { userId }, config);
 
-        if(!chats.find((c) => c._id === data._id)) {
-          setChats([data, ...chats]);
-        }
+      if (!chats.find((c) => c._id === data._id)) {
+        setChats([data, ...chats]);
+      }
 
-        setSelectedChat(data);
-        setLoadingChat(false);
-        onClose();
-    } catch (error ) {
+      setSelectedChat(data);
+      setLoadingChat(false);
+      onClose();
+    } catch (error) {
       toast({
         title: "Error fetching the chat",
         status: error.message,
@@ -119,20 +117,20 @@ const SideDrawer = () => {
         <div>
           <Menu>
             <MenuButton p={1} className="position-relative" mr={2}>
-              <BellIcon fontSize="2xl" m={1}/>
+              <BellIcon fontSize="2xl" m={1} />
               <span className="badge text-bg-danger position-absolute top-0 start-50 rounded-circle">{notification.length}</span>
             </MenuButton>
             <MenuList pl={2}>
-                {!notification.length && "No new messages"}
-                {notification.map((notif) => (
-                    <MenuItem key={notif._id} onClick={() => {
-                      setSelectedChat(notif.chat);
-                      setNotification(notification.filter((n) => n !== notif));
-                    }}>
-                      {notif.chat.isGroupChat 
-                      ? `New Message from ${notif.chat.chatName}`: `New Message from ${getSender(user, notif.chat.users)}`}
-                    </MenuItem>
-                ))}
+              {!notification.length && "No new messages"}
+              {notification.map((notif) => (
+                <MenuItem key={notif._id} onClick={() => {
+                  setSelectedChat(notif.chat);
+                  setNotification(notification.filter((n) => n !== notif));
+                }}>
+                  {notif.chat.isGroupChat
+                    ? `New Message from ${notif.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
             </MenuList>
           </Menu>
           <Menu>
@@ -153,22 +151,22 @@ const SideDrawer = () => {
       <Drawer placement='left' onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-        <DrawerCloseButton />
+          <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
 
           <DrawerBody>
             <Box display='flex' pb={2}>
-              <Input style={{ wordWrap : "break-word" }} placeholder="e.g. John, Jane, Jack" mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
+              <Input style={{ wordWrap: "break-word" }} placeholder="e.g. John, Jane, Jack" mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
               <Button onClick={handleSearch}>Go</Button>
             </Box>
             {loading ? (
-              <ChatLoading/>
-            ): (
+              <ChatLoading />
+            ) : (
               searchResult?.map(user => (
-                <UserListItem key={user._id} user={user} handleFunction={()=>accessChat(user._id)}/>
+                <UserListItem key={user._id} user={user} handleFunction={() => accessChat(user._id)} />
               ))
-            )}      
-            {loadingChat && <Spinner ml="auto" d="flex" />}      
+            )}
+            {loadingChat && <Spinner ml="auto" d="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
