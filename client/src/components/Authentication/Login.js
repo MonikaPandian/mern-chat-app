@@ -77,13 +77,13 @@ const Login = () => {
         <VStack spacing="5px">
             <FormControl id="email" isRequired>
                 <FormLabel>Email</FormLabel>
-                <Input value={email} id="loginEmail" placeholder="Enter Your Email Address" onChange={(e) => setEmail(e.target.value)} />
+                <Input bg="white" value={email} id="loginEmail" placeholder="Enter Your Email Address" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
 
             <FormControl id="password" isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
-                    <Input type={show ? "text" : "password"} id="loginPassword" value={password} placeholder="Enter Password" onChange={(e) => setPassword(e.target.value)} />
+                    <Input bg="white" type={show ? "text" : "password"} id="loginPassword" value={password} placeholder="Enter Password" onChange={(e) => setPassword(e.target.value)} />
                     <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick}>
                             {show ? "Hide" : "Show"}
@@ -92,7 +92,7 @@ const Login = () => {
                 </InputGroup>
             </FormControl>
 
-            <Button colorScheme="blue" width="100%" style={{ marginTop: 15 }} onClick={submitHandler} isLoading={loading}>Login</Button>
+            <Button colorScheme="teal" width="100%" style={{ marginTop: 15 }} onClick={submitHandler} isLoading={loading}>Login</Button>
             <Button variant="solid" colorScheme="yellow" width="100%" style={{ marginTop: 15 }} onClick={() => { setEmail("guest@example.com"); setPassword("123456") }}>Get Guest user credentials</Button>
         </VStack>
     )
