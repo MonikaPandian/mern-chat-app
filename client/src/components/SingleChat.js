@@ -1,4 +1,4 @@
-import { ArrowBackIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, Button, FormControl, IconButton, Spinner, Stack, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import React from 'react'
@@ -14,6 +14,7 @@ import io from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 import InputEmoji from "react-input-emoji";
+import { IoMdSend } from "react-icons/io";
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -28,7 +29,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [socketConnected, setSocketConnected] = useState(false);
     const [typing, setTyping] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
-   
+
     const defaultOptions = {
         loop: true,
         animation: true,
@@ -46,7 +47,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.on("connected", () => setSocketConnected(true));
         socket.on('typing', () => setIsTyping(true));
         socket.on('stop typing', () => setIsTyping(false));
-    }, [])
+    }, [user])
 
     const fetchMessages = async () => {
         if (!selectedChat) return;
@@ -80,6 +81,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     useEffect(() => {
         fetchMessages();
         selectedChatCompare = selectedChat;
+        // eslint-disable-next-line 
     }, [selectedChat]);
 
     useEffect(() => {
@@ -145,14 +147,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         var timerLength = 3000;
         setTimeout(() => {
             var timeNow = new Date().getTime();
-            var timeDiff = timeNow - lastTypingTime;           
+            var timeDiff = timeNow - lastTypingTime;
             if (timeDiff >= timerLength && typing) {
                 socket.emit("stop typing", selectedChat._id);
                 setTyping(false);
             }
         }, timerLength);
     };
-   
+
     return (
         <>
             {selectedChat ? (
@@ -198,13 +200,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                                 <ScrollableChat messages={messages} />
                             </div>
                         )}
-                        
+
                         <FormControl onKeyDown={sendMessage} isRequired mt={3}>
                             {isTyping ? <div> <Lottie width={70} options={defaultOptions} style={{ marginBottom: 15, marginLeft: 0 }} /> </div> : <></>}
                             <Stack direction="row" spacing={2}>
-                                  <InputEmoji  placeholder="Enter a message..." onChange={typingHandler} value={newMessage}/>          
+                                <InputEmoji placeholder="Enter a message..." onChange={typingHandler} value={newMessage} />
                                 <Button colorScheme='teal' variant='solid' onClick={sendMessage} mt={2}>
-                                    send <ArrowRightIcon pl={2} />
+                                    send &nbsp;&nbsp;<IoMdSend size={25}></IoMdSend>
                                 </Button>
                             </Stack>
                         </FormControl>
