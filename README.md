@@ -1,5 +1,5 @@
 # Chat-Box
-Chat-Box is a Full Stack Chatting App. Uses Socket.io for real time communication and stores user details in encrypted format in Mongo DB Database.
+Chat-Box is a Full Stack Chatting App. Chat-Box uses Socket.io for real time communication and stores user details in encrypted format in Mongo DB Database. We have one on one chat as well as group chatting functionality in this app.
 
 # Tech Stack Used
 **Client**: React JS <br/>
