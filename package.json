@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "build": "cd server && npm install && cd ../client && npm install --force && npm run build",
+    "start": "node index.js",
+    "build": "cd server && npm install && cd client && npm install --force && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +18,18 @@
   "bugs": {
     "url": "https://github.com/MonikaPandian/mern-chat-app/issues"
   },
-  "homepage": "https://github.com/MonikaPandian/mern-chat-app#readme"
+  "homepage": "https://github.com/MonikaPandian/mern-chat-app#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.4",
+    "socket.io": "^4.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
