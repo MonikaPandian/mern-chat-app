@@ -57,15 +57,15 @@ const authUser = asyncHandler(async (req, res) => {
 //api/user?search=
 const searchUsers = asyncHandler(async (req, res) => {
     var pattern = "^" + req.query.search;
-    
+
     const keyword = req.query.search ? {
         "$or": [
             { name: { $regex: pattern, $options: "i" } },
             { email: { $regex: pattern, $options: "i" } },
         ],
     }
-        : {};   
-    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });    
+        : {};
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
     res.send(users);
 });
 
