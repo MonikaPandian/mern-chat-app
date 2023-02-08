@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Center, Container, Flex, Heading } from "@chakra-ui/react";
+import { Box, Center, Container, Flex, Heading } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel, useColorModeValue } from '@chakra-ui/react';
 import Login from "../components/Authentication/Login"
 import Signup from "../components/Authentication/Signup"
@@ -19,6 +19,7 @@ const HomePage = () => {
 
   return (
     <Container centerContent>
+
       <Flex h="100vh" alignItems="center">
         <Flex
           flexDirection="column"

@@ -7,6 +7,7 @@ import { useToast } from '@chakra-ui/react';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ChatState } from '../../Context/ChatProvider';
+import { Link } from '@chakra-ui/react'
 
 const Login = () => {
     const [show, setShow] = useState(false);
@@ -70,7 +71,6 @@ const Login = () => {
             });
             setLoading(false)
         }
-
     }
 
     return (
@@ -90,6 +90,12 @@ const Login = () => {
                         </Button>
                     </InputRightElement>
                 </InputGroup>
+            </FormControl>
+
+            <FormControl align="right" pt={2}>
+                <Link textDecoration="underline" onClick={() => navigate('/forgot-password')}>
+                    Forgot Password ?
+                </Link>
             </FormControl>
 
             <Button colorScheme="teal" width="100%" style={{ marginTop: 15 }} onClick={submitHandler} isLoading={loading}>Login</Button>
