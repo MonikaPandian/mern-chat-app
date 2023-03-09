@@ -4,7 +4,7 @@ const connectDB = require("./server/config/db");
 const userRoutes = require("./server/routes/userRoutes.js");
 const chatRoutes = require("./server/routes/chatRoutes.js");
 const messageRoutes = require("./server/routes/messageRoutes.js");
-const { notFound, errorHandler } = require('./server/middleware/errorMiddleware')
+const { notFound, errorHandler } = require('./server/middleware/errorMiddleware');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -21,13 +21,19 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);
 
 // -------------Deployment--------------- //
-__dirname = path.resolve();
-const buildPath = path.join(__dirname, "/client/build");
+if (process.env.NODE_ENV === 'production') {
+    __dirname = path.resolve();
+    const buildPath = path.join(__dirname, "/client/build");
 
-app.use(express.static(buildPath))
-app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"))
-})
+    app.use(express.static(buildPath))
+    app.get("*", function (req, res) {
+        res.sendFile(path.join(__dirname, "client", "build", "index.html"))
+    })
+} else {
+    app.get("/", (req, res) => {
+        res.send("API is running successfully");
+    })
+}
 // -------------Deployment--------------- //
 
 app.use(notFound);

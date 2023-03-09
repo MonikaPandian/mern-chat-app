@@ -16,7 +16,7 @@ import animationData from "../animations/typing.json";
 import InputEmoji from "react-input-emoji";
 import { IoMdSend } from "react-icons/io";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://mern-chat-app-nu.vercel.app/";
 
 var socket, selectedChatCompare;
 
@@ -29,6 +29,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [socketConnected, setSocketConnected] = useState(false);
     const [typing, setTyping] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
+    const toast = useToast();
 
     const defaultOptions = {
         loop: true,
@@ -38,8 +39,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             preserveAspectRatio: "xMidYMid slice"
         }
     }
-
-    const toast = useToast();
 
     useEffect(() => {
         socket = io(ENDPOINT);
@@ -51,20 +50,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     const fetchMessages = async () => {
         if (!selectedChat) return;
-
         try {
             const config = {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-
             setLoading(true)
-
             const { data } = await axios.get(`/api/message/${selectedChat._id}`, config);
             setMessages(data);
             setLoading(false);
-
             socket.emit("join chat", selectedChat._id);
         } catch (error) {
             toast({
@@ -131,7 +126,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     };
 
     const typingHandler = (newMessage) => {
-        console.log(newMessage);
         setNewMessage(newMessage);
         // Typing Indicator Logic
         if (!socketConnected) {

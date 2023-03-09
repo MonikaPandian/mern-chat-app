@@ -57,7 +57,7 @@ const ResetPassword = () => {
                 },
             };
 
-            const { data } = await axios.post(
+            await axios.post(
                 `/api/user/reset-password/${id}/${token}`,
                 { password: newPassword },
                 config
